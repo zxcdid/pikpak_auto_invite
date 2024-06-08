@@ -54,10 +54,10 @@ git clone https://github.com/LinYuanovo/pikpak_auto_invite.git
 cd pikpak_auto_invite
 ```
 
-3. 安装项目所需依赖
+3. 安装项目所需依赖（如安装有问题自行换源）
 
 ```shell
-pip install -r requirements.txt -i https://pypi.douban.com/simple
+pip install -r requirements.txt
 ```
 
 ###### 效果演示
