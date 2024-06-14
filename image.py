@@ -19,27 +19,27 @@ def read_img(path):
     return img, height, width
 
 # 图像切割
-def cut_img(img, height, width):
+def cut_img(img, height, width, matrix):
     # 切割图像
-    img_list = [[0 for _ in range(3)] for _ in range(3)]
-    for i in range(3):
-        for j in range(3):
+    img_list = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix[0]))]
+    for i in range(len(matrix[0])):
+        for j in range(len(matrix[0])):
             # 纵向切割
-            img_list[j][i] = img[i * height // 3: (i + 1) * height // 3, j * width // 3: (j + 1) * width // 3]
+            img_list[j][i] = img[i * height // 4: (i + 1) * height // 4, j * width // 4: (j + 1) * width // 4]
     return img_list
 
 # 图像重组
 def re_img(img_list, height, width, matrix):
-    new_img_list = [[0 for _ in range(3)] for _ in range(3)]
-    for i in range(3):
-        for j in range(3):
+    new_img_list = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix[0]))]
+    for i in range(len(matrix[0])):
+        for j in range(len(matrix[0])):
             k, l = matrix[i][j].split(',')
             new_img_list[i][j] = img_list[int(k)][int(l)]
     # 图像拼接
     img = np.zeros((height, width, 3), np.uint8)
-    for i in range(3):
-        for j in range(3):
-            img[i * height // 3: (i + 1) * height // 3, j * width // 3: (j + 1) * width // 3] = new_img_list[i][j]
+    for i in range(len(matrix[0])):
+        for j in range(len(matrix[0])):
+            img[i * height // 4: (i + 1) * height // 4, j * width // 4: (j + 1) * width // 4] = new_img_list[i][j]
     return img
 
 # 图像展示
@@ -71,7 +71,7 @@ def delete_img():
 
 def run(img_path, frames):
     iamge, height, width = read_img(img_path)
-    img_list = cut_img(iamge, height, width)
+    img_list = cut_img(iamge, height, width, frames[0]['matrix'])
     for i in range(len(frames)):
         matrix = frames[i]['matrix']
         temp_img = re_img(img_list, height, width, matrix)
