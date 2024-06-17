@@ -1,11 +1,3 @@
-"""
-@author: 黄志刚
-@id: 20211060112
-@date: 2024/6/6
-@tobe: opencv图像复原
-@description: 对九宫格乱序图片切分成九部分进行边缘检测复原
-"""
-
 import os
 import cv2
 import matplotlib.pyplot as plt
@@ -25,7 +17,7 @@ def cut_img(img, height, width, matrix):
     for i in range(len(matrix[0])):
         for j in range(len(matrix[0])):
             # 纵向切割
-            img_list[j][i] = img[i * height // 4: (i + 1) * height // 4, j * width // 4: (j + 1) * width // 4]
+            img_list[j][i] = img[i * height // len(matrix[0]): (i + 1) * height // len(matrix[0]), j * width // len(matrix[0]): (j + 1) * width // len(matrix[0])]
     return img_list
 
 # 图像重组
@@ -39,7 +31,7 @@ def re_img(img_list, height, width, matrix):
     img = np.zeros((height, width, 3), np.uint8)
     for i in range(len(matrix[0])):
         for j in range(len(matrix[0])):
-            img[i * height // 4: (i + 1) * height // 4, j * width // 4: (j + 1) * width // 4] = new_img_list[i][j]
+            img[i * height // len(matrix[0]): (i + 1) * height // len(matrix[0]), j * width // len(matrix[0]): (j + 1) * width // len(matrix[0])] = new_img_list[i][j]
     return img
 
 # 图像展示
