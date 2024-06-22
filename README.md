@@ -27,7 +27,7 @@
 - [作者](#作者)
 - [上手指南](#上手指南)
   - [本地运行](#本地运行)
-  - [GitHub Actions运行（每日云端定时自动运行）](#GitHub Actions运行)
+  - [GitHub Actions运行（每日云端定时自动运行）](#GitHubActions运行)
 - [文件目录说明](#文件目录说明)
 - [说明](#说明)
 
@@ -84,7 +84,7 @@ python run.py
 
 如果觉得模型不够满意也可以查看我的另一个项目[Ddddocr 自训练今日校园、PikPak验证码模型](https://github.com/LinYuanovo/ddddocr_models)里面包含了几个版本的模型以及数据集，可以自己进行训练
 
-#### GitHub Actions运行
+#### GitHubActions运行
 
 1. 点击项目右上角进行**fork**，也可以顺手点个**star**
 
@@ -133,7 +133,7 @@ pikpak_auto_invite
 ### 说明
 
 - 本项目仅仅只是在UP主[纸鸢花的花语](https://space.bilibili.com/67788420/)所公开的源码以及其群管理Atong的脚本基础上进行简单修改，加入了图像识别处理验证码，并未进行任何架构上的更改。上传本项目也仅为了用于学习研究以及备份，无任何不良引导，如有侵权请联系我进行删除。如果项目对你有帮助欢迎点点star。
-- 项目依赖于Github Actions运行，不会泄露你的邀请码
+- 项目依赖于GitHub Actions运行，不会泄露你的邀请码
 - 官方限制现在邀请的会员掉了人数也不会掉，所以邀请之前请查看自己人数是否超**50**人
 
 <!-- links -->
