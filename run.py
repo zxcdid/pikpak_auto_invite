@@ -10,9 +10,18 @@ import image
 import recognize
 from rich import print_json
 
-DEBUG_MODE = False # Debug模式，是否打印请求返回信息
-PROXY = input('请输入代理，如不需要直接回车:') # 代理，如果多次出现IP问题可尝试将自己所用的魔法设置为代理。例如：使用clash则设置为 'http://127.0.0.1:7890'
-# PROXY = 'http://127.0.0.1:7890'
+DEBUG_MODE = False  # Debug模式，是否打印请求返回信息
+# PROXY = input('请输入代理，如不需要直接回车:')  # 代理，如果多次出现IP问题可尝试将自己所用的魔法设置为代理。例如：使用clash则设置为 'http://127.0.0.1:7890'
+PROXY = ''
+INVITE_CODE = os.getenv('INVITE_CODE') or input('请输入邀请码: ')
+
+
+# 检查变量
+def check_env():
+    if not INVITE_CODE:
+        print('请按照文档设置INVITE_CODE环境变量')
+        raise Exception('请按照文档设置INVITE_CODE环境变量')
+
 
 # 滑块数据加密
 def r(e, t):
@@ -111,7 +120,6 @@ async def get_mail():
         async with session.post(url, json=json_data, ssl=False) as response:
             response_data = await response.json()
             mail = response_data['email']
-        print(f'获取邮箱:{mail}')
         return mail
 
 
@@ -207,7 +215,8 @@ async def get_image(xid):
                 'pid': pid,
                 'traceid': traceid
             }
-            async with session.get(f"https://user.mypikpak.com/pzzl/image", params=params, ssl=False, proxy=PROXY) as response1:
+            async with session.get(f"https://user.mypikpak.com/pzzl/image", params=params, ssl=False,
+                                   proxy=PROXY) as response1:
                 img_data = await response1.read()
                 # 保存初始图片
                 save_image(img_data, f'temp/1.png')
@@ -230,16 +239,19 @@ async def get_image(xid):
                 'a': npac[2],
                 'c': npac[3]
             }
-            async with session.get(f"https://user.mypikpak.com/pzzl/verify", params=params, ssl=False, proxy=PROXY) as response1:
+            async with session.get(f"https://user.mypikpak.com/pzzl/verify", params=params, ssl=False,
+                                   proxy=PROXY) as response1:
                 response_data = await response1.json()
             result = {'pid': pid, 'traceid': traceid, 'response_data': response_data}
             return result
+
 
 def save_image(img_data, img_path):
     if not os.path.exists(os.path.dirname(img_path)):
         os.makedirs(os.path.dirname(img_path))
     with open(img_path, "wb") as f:
         f.write(img_data)
+
 
 async def get_new_token(result, xid, captcha):
     traceid = result['traceid']
@@ -354,7 +366,7 @@ async def signup(xid, mail, code, verification_token):
         "email": mail,
         "verification_code": code,
         "verification_token": verification_token,
-        "password": "pw123456",
+        "password": "linyuan666",
         "client_id": "YvtoWO6GNHiuCl7x"
     }
     headers = {
@@ -585,10 +597,9 @@ async def activation_code(access_token, captcha, xid, in_code):
 
 
 async def main():
-    # print('本脚本是固定滑动次数,多次碰撞验证版！！')
-    # print('成功与否全凭运气, 可能几次就成功, 也可能几十次都不成功, 请自行测试, 祝使用愉快!')
     try:
-        incode = input('请输入邀请码:')
+        check_env()
+        incode = INVITE_CODE
         start_time = time.time()
         xid = str(uuid.uuid4()).replace("-", "")
         mail = await get_mail()
@@ -596,7 +607,6 @@ async def main():
         while True:
             print('验证滑块中...')
             img_info = await get_image(xid)
-            # time.sleep(random.randint(15, 20))
             if img_info['response_data']['result'] == 'accept':
                 print('验证通过!!!')
                 break
@@ -618,15 +628,20 @@ async def main():
         run_time = f"{(end_time - start_time):.2f}"
         if activation['add_days'] == 5:
             print(f'邀请码: {incode} ==> 邀请成功, 用时: {run_time} 秒')
+            print(f'邮箱: {mail}')
+            print(f'密码: linyuan666')
+            return
         else:
             print(f'邀请码: {incode} ==> 邀请失败, 用时: {run_time} 秒')
-        input('按回车键再次邀请!!!')
+        # input('按回车键再次邀请!!!')
         await main()
     except Exception as e:
+        if '环境变量' in str(e):
+            return
         print(f'异常捕获:{e}')
         print('请检查网络环境,(开启科学上网)重试!!!')
-        input('按回车键重试!!!')
-        await main()
+        # input('按回车键重试!!!')
+        # await main()
 
 
 asyncio.run(main())
