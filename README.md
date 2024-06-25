@@ -86,6 +86,8 @@ python run.py
 
 #### GitHubActions运行
 
+[B站-视频教程](https://www.bilibili.com/video/BV1JZ3FeWEsF/)
+
 1. 点击项目右上角进行**fork**，也可以顺手点个**star**
 
     ![对项目进行fork](https://raw.githubusercontent.com/LinYuanovo/pic_bed/main/pikpak_auto_invite/f43174c1-1576-4ab0-b86f-31355b400887.png)
@@ -118,7 +120,7 @@ python run.py
 pikpak_auto_invite 
 ├── /.github/
 │  │──  /workflows/
-│  │  │── run.yml       	Github Actions配置文件
+│  │  │── run.yml           Github Actions配置文件
 ├── README.md
 ├── /models/
 │  │── pikpak3.0.onnx       图像识别模型
